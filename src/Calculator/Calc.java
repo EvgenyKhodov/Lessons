@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Calc {
-    private int a, b;
-    private String operator;
+    int a, b;
+    String operator;
 
 
     private int calcExp(int n1, String op, int n2) {
@@ -46,7 +46,7 @@ public class Calc {
         if (parse.checkOperator(expItems.get(1))) {
             operator = expItems.get(1);
         } else {
-            throw new CalcException("ОШИБКА. Оператор '" + expItems.get(1) + "' не корректен, должен быть: + - * / ");
+            throw new CalcException("ОШИБКА. Оператор " + expItems.get(1) + " не корректен, должен быть: + - * / ");
         }
 
 
@@ -58,25 +58,28 @@ public class Calc {
             a = parse.romeToArabConvert(expItems.get(0));
             b = parse.romeToArabConvert(expItems.get(2));
             isRomanExp = true;
-        } else {
-            throw new CalcException("ОШИБКА. Числа должны быть оба арабские или оба римские");
+        }else {
+            throw new CalcException("ОШИБКА. Одновременно используются разные системы счисления ");
         }
 
 
-        if (!(a >= 1 && a <= 10)) {
-            throw new CalcException("ОШИБКА. Число #1 должно быть от 1 до 10 или от I до X включительно");
+        if (a > 10) {
+            throw new CalcException("ОШИБКА. Число №1 должно быть от 1 до 10");
         }
 
-        if (!(b >= 1 && b <= 10)) {
-            throw new CalcException("ОШИБКА. Число #2 должно быть от 1 до 10 или от I до X включительно");
+        if (b > 10) {
+            throw new CalcException("ОШИБКА. Число №2 должно быть от 1 до 10");
         }
-
 
         int res = calcExp(a, operator, b);
 
 
         if (isRomanExp) {
             String sign = res < 0 ? "-" : "";
+            if(sign.equals("-")){
+                throw new CalcException("ОШИБКА. В римской системе нет отрицательных чисел");
+            }
+
             return sign + parse.arabToRomeConvert(Math.abs(res));
         }
 
